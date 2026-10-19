@@ -1,4 +1,4 @@
-﻿# 蜘蛛纸牌 · Spider Solitaire
+# 蜘蛛纸牌 · Spider Solitaire
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-e9cb84.svg)](LICENSE)
 [![Dependencies: 0](https://img.shields.io/badge/runtime%20dependencies-0-2ea44f.svg)](package.json)
@@ -8,6 +8,8 @@
 **纯前端、零运行时依赖、可离线游玩的蜘蛛纸牌。** 单文件页面启动即玩，支持单 / 双 / 四花色三种难度、拖拽与点击两套操作、无限撤销、智能提示、自动合并、自动存档与响应式布局。
 
 > 🎮 在线试玩：<https://549763551.github.io/spider-solitaire/>
+
+![蜘蛛纸牌界面截图](docs/screenshot.png)
 
 ---
 
