@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>蜘蛛纸牌 · Spider Solitaire</title>
+<meta name="description" content="纯前端蜘蛛纸牌：单/双/四花色难度、拖拽与点击操作、撤销、提示、自动合并、自动存档，无需安装。">
+<meta name="theme-color" content="#08251d">
+<meta property="og:title" content="蜘蛛纸牌 · Spider Solitaire">
+<meta property="og:description" content="纯前端蜘蛛纸牌：单/双/四花色难度、拖拽与点击操作、撤销、提示、自动合并、自动存档。">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">♠</span>
+      <span class="brand-text">
+        <strong>蜘蛛纸牌</strong>
+        <small>SPIDER SOLITAIRE</small>
+      </span>
+    </div>
+
+    <dl class="stats">
+      <div class="stat"><dt>得分</dt><dd id="statScore">500</dd></div>
+      <div class="stat"><dt>步数</dt><dd id="statMoves">0</dd></div>
+      <div class="stat"><dt>时间</dt><dd id="statTime">00:00</dd></div>
+      <div class="stat"><dt>进度</dt><dd id="statProgress">0 / 8</dd></div>
+    </dl>
+
+    <nav class="actions" aria-label="工具栏">
+      <button class="btn" id="btnRules" type="button">规则</button>
+      <button class="btn" id="btnHint" type="button">提示<kbd>H</kbd></button>
+      <button class="btn" id="btnUndo" type="button">撤销<kbd>U</kbd></button>
+      <button class="btn" id="btnAuto" type="button">自动</button>
+      <button class="btn icon" id="btnSound" type="button" aria-pressed="true" title="音效" aria-label="音效开关">♪</button>
+      <button class="btn primary" id="btnNew" type="button">新游戏</button>
+    </nav>
+  </header>
+
+  <main class="stage" id="stage">
+    <div class="columns" id="columns" aria-hidden="true"></div>
+    <div class="dock" id="dock" aria-hidden="true">
+      <span class="dock-label done-label">已完成</span>
+      <span class="dock-label stock-label">牌堆</span>
+    </div>
+    <div class="card-layer" id="cardLayer"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+
+  <footer class="bottombar">
+    <span class="hintbar" id="hintbar">拖动牌组，或点击选中后再点击目标列。双击自动出牌。</span>
+    <span class="signature">MIT Licensed · 纯前端 0 依赖</span>
+  </footer>
+</div>
+
+<dialog class="modal" id="dlgNew">
+  <form method="dialog" class="modal-body">
+    <h2>新游戏</h2>
+    <p class="muted">选择花色数量。花色越多，可移动到同一列的牌越少，难度越高。</p>
+    <div class="difficulty" id="difficultyPicker">
+      <button type="button" class="diff" data-difficulty="1">
+        <span class="diff-suits red-black">♠</span>
+        <strong>单花色</strong>
+        <em>轻松</em>
+      </button>
+      <button type="button" class="diff" data-difficulty="2">
+        <span class="diff-suits"><b>♠</b><b class="red">♥</b></span>
+        <strong>双花色</strong>
+        <em>进阶</em>
+      </button>
+      <button type="button" class="diff" data-difficulty="4">
+        <span class="diff-suits"><b>♠</b><b class="red">♥</b><b class="red">♦</b><b>♣</b></span>
+        <strong>四花色</strong>
+        <em>困难</em>
+      </button>
+    </div>
+    <p class="muted small">当前进度会自动保存，下次打开可继续。</p>
+    <div class="modal-foot">
+      <button class="btn" value="cancel" type="submit">取消</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog class="modal" id="dlgWin">
+  <div class="modal-body win-body">
+    <div class="win-badge" aria-hidden="true">♠</div>
+    <h2>通关！</h2>
+    <p class="muted" id="winSummary"></p>
+    <dl class="win-stats" id="winStats"></dl>
+    <div class="modal-foot">
+      <button class="btn" id="btnWinClose" type="button">查看牌面</button>
+      <button class="btn primary" id="btnWinNew" type="button">再来一局</button>
+    </div>
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+  </div>
+</dialog>
+
+<dialog class="modal" id="dlgRules">
+  <form method="dialog" class="modal-body">
+    <h2>玩法规则</h2>
+    <ol class="rules">
+      <li>使用两副牌共 104 张，摆成 10 列，其中 4 列 6 张、6 列 5 张，每列只有最上面一张翻开。</li>
+      <li>点击右下角牌堆，一次给每列发一张明牌，共 5 次；有空列时不能发牌。</li>
+      <li>只能把<b>同花色且连续递减</b>的一组牌整体拖动；落点必须是比该组首张牌大 1 的牌，或空列。</li>
+      <li>凑出从 K 到 A 的同花色连续 13 张，会自动收起并计入「已完成」，共 8 组即通关。</li>
+      <li>每次移动 -1 分，收起一组 +100 分，初始 500 分。撤销同样消耗步数记录。</li>
+    </ol>
+    <div class="modal-foot">
+      <button class="btn primary" value="ok" type="submit">知道了</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="js/game.js" defer></script>
+<script src="js/sound.js" defer></script>
+<script src="js/app.js" defer></script>
+</body>
+</html>

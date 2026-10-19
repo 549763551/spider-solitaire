@@ -1,0 +1,29 @@
+{
+  "name": "spider-solitaire",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A polished, zero-dependency Spider Solitaire built with vanilla HTML, CSS and JavaScript.",
+  "homepage": "https://549763551.github.io/spider-solitaire/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/549763551/spider-solitaire.git"
+  },
+  "keywords": [
+    "spider-solitaire",
+    "solitaire",
+    "card-game",
+    "vanilla-javascript",
+    "html5-game",
+    "offline"
+  ],
+  "scripts": {
+    "test": "node tests/engine.test.js && node tests/ui.test.js",
+    "test:engine": "node tests/engine.test.js",
+    "test:ui": "node tests/ui.test.js",
+    "serve": "node scripts/serve.js"
+  },
+  "devDependencies": {
+    "jsdom": "^24.1.0"
+  },
+  "license": "MIT"
+}

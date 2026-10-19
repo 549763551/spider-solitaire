@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+npm-debug.log*
+yarn-error.log*
+
+# local tooling
+.chrome-tmp/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# local screenshots / scratch
+*.local
