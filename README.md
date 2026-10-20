@@ -1,6 +1,7 @@
 # 蜘蛛纸牌 · Spider Solitaire
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-e9cb84.svg)](LICENSE)
+[![Release](https://img.shields.io/badge/release-v1.0.0-2ea44f.svg)](https://github.com/549763551/spider-solitaire/releases/tag/v1.0.0)
 [![Dependencies: 0](https://img.shields.io/badge/runtime%20dependencies-0-2ea44f.svg)](package.json)
 [![Vanilla JS](https://img.shields.io/badge/vanilla-HTML%2FCSS%2FJS-f7df1e.svg)](js/)
 [![GitHub Pages](https://img.shields.io/badge/play-online-1f6feb.svg)](https://549763551.github.io/spider-solitaire/)
@@ -31,6 +32,8 @@
 ## 快速开始
 
 直接双击 `index.html` 就能玩（脚本均为普通 `<script>`，兼容 `file://`）。
+
+或者下载离线包：[**Releases → v1.0.0 → spider-solitaire-v1.0.0.zip**](https://github.com/549763551/spider-solitaire/releases/latest)，解压后双击 `index.html`，断网也能玩。
 
 想用本地服务器：
 
